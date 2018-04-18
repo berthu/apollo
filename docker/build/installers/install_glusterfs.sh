@@ -16,6 +16,9 @@
 # limitations under the License.
 ###############################################################################
 
+# Fail on first error.
+set -e
+
 add-apt-repository -y ppa:gluster/glusterfs-3.10
 apt-get update -y
 apt-get install -y glusterfs-client

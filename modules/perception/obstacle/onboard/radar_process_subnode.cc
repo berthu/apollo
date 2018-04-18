@@ -184,15 +184,14 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
     if (roi_filter_ != nullptr) {
       roi_filter_->MergeHdmapStructToPolygons(hdmap, &map_polygons);
     }
-  }
 
-  // 3. get car car_linear_speed
-  if (!GetCarLinearSpeed(timestamp, &(options.car_linear_speed))) {
-    AERROR << "Failed to call get_car_linear_speed. [timestamp: "
-           << GLOG_TIMESTAMP(timestamp);
-    return;
+    // 3. get car car_linear_speed
+    if (!GetCarLinearSpeed(timestamp, &(options.car_linear_speed))) {
+      AERROR << "Failed to call get_car_linear_speed. [timestamp: "
+             << GLOG_TIMESTAMP(timestamp);
+      return;
+    }
   }
-
   // 4. Call RadarDetector::detect.
   PERF_BLOCK_START();
   if (!FLAGS_use_navigation_mode) {
@@ -232,7 +231,7 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
 void RadarProcessSubnode::OnLocalization(
     const apollo::localization::LocalizationEstimate &localization) {
   double timestamp = localization.header().timestamp_sec();
-  AINFO << "localization timestamp:" << GLOG_TIMESTAMP(timestamp);
+  ADEBUG << "localization timestamp:" << GLOG_TIMESTAMP(timestamp);
   LocalizationPair localization_pair;
   localization_pair.first = timestamp;
   localization_pair.second = localization;

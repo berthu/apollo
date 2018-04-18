@@ -79,10 +79,10 @@ DEFINE_bool(image_file_debug, false, "Debug ROS to CV image");
 
 /// modules/perception/lib/config_manager/calibration_config_manager.cc
 DEFINE_string(front_camera_extrinsics_file,
-              "/data/params/front_camera_extrinsics.yaml",
+              "modules/perception/data/params/front_camera_extrinsics.yaml",
               "front_camera extrinsic file");
 DEFINE_string(front_camera_intrinsics_file,
-              "/data/params/front_camera_intrinsics.yaml",
+              "modules/perception/data/params/front_camera_intrinsics.yaml",
               "front_camera intrinsic file");
 
 /// obstacle/onboard/fusion_subnode.cc
@@ -139,3 +139,18 @@ DEFINE_bool(show_motion, false, "visualize motion and object trajectories");
 DEFINE_bool(skip_camera_frame, false, "skip camera frame");
 DEFINE_int32(camera_hz, 30, "camera hz");
 DEFINE_string(fusion_publish_sensor_id, "velodyne_64", "fusion publish id");
+
+DEFINE_int32(pbf_fusion_assoc_distance_percent, 20, "fusion distance percent");
+DEFINE_double(pbf_distance_speed_cos_diff, 0.5, "fusion velocity cosine diff");
+
+DEFINE_string(cc_lane_post_processor_config_file,
+              "modules/perception/model/camera/lane_post_process_config.pb.txt",
+              "The config file of cc_lane_post_processor.");
+DEFINE_string(probabilistic_fusion_config_file,
+              "modules/perception/model/probabilistic_fusion_config.pb.txt",
+              "The config file of probabilistic_fusion.");
+DEFINE_string(yolo_config_filename, "config.pt", "Yolo config filename.");
+DEFINE_string(
+    yolo_camera_detector_config,
+    "modules/perception/model/camera/yolo_camera_detector_config.pb.txt",
+    "Yolo camera detector config filename.");
