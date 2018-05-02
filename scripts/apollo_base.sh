@@ -68,34 +68,9 @@ function fail() {
   exit -1
 }
 
-# Check whether user has agreed license agreement
-function check_agreement() {
-  agreement_record="$HOME/.cache/.apollo_agreement.txt"
-  if [ ! -e "$agreement_record" ]; then
-    AGREEMENT_FILE="$APOLLO_ROOT_DIR/scripts/AGREEMENT.txt"
-    if [ ! -e "$AGREEMENT_FILE" ]; then
-      error "AGREEMENT $AGREEMENT_FILE does not exist."
-      exit 0
-    fi
-    cat $AGREEMENT_FILE
-    tip="Type 'y' or 'Y' to agree to the license agreement above, or type any other key to exit"
-    echo $tip
-    read -n 1 user_agreed
-    if [ "$user_agreed" == "y" ] || [ "$user_agreed" == "Y" ]; then
-      rm -rf $agreement_record
-      cat $AGREEMENT_FILE >> $agreement_record
-      echo "$tip" >> $agreement_record
-      echo "$user_agreed" >> $agreement_record
-    else
-      exit 0
-    fi
-  fi
-}
-
 function check_in_docker() {
   if [ -f /.dockerenv ]; then
     APOLLO_IN_DOCKER=true
-    check_agreement
   else
     APOLLO_IN_DOCKER=false
   fi
@@ -358,7 +333,7 @@ function stop_customized_path() {
   MODULE_PATH=$1
   MODULE=$2
 
-  pkill -f "modules/${MODULE_PATH}/${MODULE}"
+  pkill -SIGKILL -f "modules/${MODULE_PATH}/${MODULE}"
   if [ $? -eq 0 ]; then
     echo "Successfully stopped module ${MODULE}."
   else
@@ -371,16 +346,20 @@ function stop() {
   stop_customized_path $MODULE $MODULE
 }
 
+# Note: This 'help' function here will overwrite the bash builtin command 'help'.
+# TODO: add a command to query known modules.
 function help() {
-  echo "Usage:
-  ./$0 [COMMAND]"
-  echo "COMMAND:
-  help: this help message
-  start: start the module in background
-  start_fe: start the module without putting in background
+cat <<EOF
+Invoke ". scripts/apollo_base.sh" within docker to add the following commands to the environment:
+Usage: COMMAND [<module_name>]
+
+COMMANDS:
+  help:      show this help message
+  start:     start the module in background
+  start_fe:  start the module without putting in background
   start_gdb: start the module with gdb
-  stop: stop the module
-  "
+  stop:      stop the module
+EOF
 }
 
 function run_customized_path() {

@@ -117,5 +117,9 @@ DECLARE_string(probabilistic_fusion_config_file);
 DECLARE_string(yolo_config_filename);
 DECLARE_string(yolo_camera_detector_config);
 DECLARE_string(modest_radar_detector_config);
+DECLARE_string(tracker_config);
+DECLARE_string(sequence_type_fuser_config);
+DECLARE_string(async_fusion_config);
+DECLARE_string(geometry_camera_converter_config);
 
 #endif  // MODULES_PERCEPTION_COMMON_PERCEPTION_GFLAGS_H_
